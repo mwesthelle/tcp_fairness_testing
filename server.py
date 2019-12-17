@@ -1,4 +1,5 @@
 import argparse
+from functools import partial
 import socket
 
 BUFFER_SIZE = 2**10
@@ -24,12 +25,12 @@ def listen(port: int):
         sock.listen(0)
         print(f"Listening on port {port}...")
         conn, addr = sock.accept()
-        print(f"Accepted connection to {addr}")
+        print(f"Accepted connection to {addr[0]}")
         with conn:
-            while True:
-                data = conn.recv(BUFFER_SIZE)
-                if not data:
-                    return
+            for data in iter(partial(conn.recv, BUFFER_SIZE), b''):
+                pass
+        print(f"Connection to {addr[0]} was closed.")
+        return
 
 
 if __name__ == '__main__':

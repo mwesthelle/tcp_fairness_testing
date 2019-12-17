@@ -1,4 +1,5 @@
 import argparse
+from functools import partial
 import logging
 import socket
 import time
@@ -25,10 +26,9 @@ def connect(ip: str, port: int):
         print(f"connected to {ip} on port {port}.")
         start_time = time.time()
         total_sent_data = 0
-        while True:
-            # sock.send returns amount of bytes successfully sent
-            sent_data = sock.send(b'x' * MSG_SIZE)
-            total_sent_data += sent_data
+        for data in iter(partial(sock.send, b'x' * MSG_SIZE), b''):
+            # sock.send returns amount of successfully sent bytes
+            total_sent_data += data
             current_time = time.time()
             if a_second_has_elapsed(current_time, start_time):
                 # bandwidth per second is data received in that second
