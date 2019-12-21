@@ -19,7 +19,7 @@ def a_second_has_elapsed(current_time: float, start_time: float) -> bool:
 def connect(ip: str, port: int):
     logging.basicConfig(filename='bandwidth.log',
                         filemode='a',
-                        format='%(asctime)s - %(message)sMBps',
+                        format='%(asctime)s - %(message)sMbps',
                         level=logging.INFO)
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
         sock.connect((ip, port))
